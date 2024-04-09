@@ -161,17 +161,17 @@ div.gameitem {
   margin-right: 15px;
   margin-bottom: 15px;
   background: radial-gradient(circle at 15% 15%, #ffffff, #d8eb01);
-  width: 90px;
-  height: 90px;
+  width: 150px;
+  height: 150px;
 }
 
 .gameitemwrapper {
-  width: 90px;
-  height: 90px;
+  width: 150px;
+  height: 150px;
   margin-right: 10px;
   margin-bottom: 10px;
-  max-width: 90px;
-  max-height: 90px;
+  max-width: 150px;
+  max-height: 150px;
   transition: transform 2s;
   transform-style: preserve-3d;
 }
@@ -201,8 +201,8 @@ div.gameiteminner:hover {
 .shownitem,
 .hiddenitem {
   border-radius: 20%;
-  max-height: 90px;
-  max-width: 90px;
+  max-height: 150px;
+  max-width: 150px;
   transform-style: preserve-3d;
 }
 
