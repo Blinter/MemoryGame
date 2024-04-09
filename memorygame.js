@@ -232,6 +232,7 @@ function grabTenorDatabase(amt) {
     let search_url = "https://tenor.googleapis.com/v2/search?q=" + search_term +
         "&key=" + apikey +
         "&client_key=" + clientkey +
+        "&contentfilter=high" +
         "&limit=" + lmt +
         "&random=true" +
         "&media_filter=gif";
