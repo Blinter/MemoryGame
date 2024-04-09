@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
             currentlevel = document.querySelector("p.difficultylevel").innerText;
             generateGameObjects(currentlevel);            
             document.querySelector(".currentGameStatistics").setAttribute("id", "currentGameStatisticsShown");
-            document.querySelector(".aligncenter").innerHTML = document.querySelector(".aligncenter").innerHTML.substring(0,26) + currentlevel;
+            document.querySelector(".aligncenter").innerHTML = document.querySelector(".aligncenter").innerHTML.substring(0,26) + currentlevel;          
+            document.querySelector(".currentscore").innerHTML = "Current<br />" + currentscore;
             closeStartMenu();
         }
         if(e.target.className === "mainMenu"){                    
