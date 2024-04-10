@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
             generateGameObjects(level);
             document.querySelector(".currentGameStatistics").setAttribute("id", "currentGameStatisticsShown");
             document.querySelector(".currentdifficulty").innerHTML = document.querySelector(".currentdifficulty").innerHTML.substring(0, 26) + level;
-            console.log(document.querySelector(".currentscore"));
             document.querySelector(".currentscore").innerHTML = "Current<br />0";
             closeStartMenu();
         }
