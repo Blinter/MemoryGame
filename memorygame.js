@@ -283,6 +283,7 @@ function httpGetAsync(theUrl, callback) {
 * A Function used as a callback to return the contents of httpGetAsync.
 * Results are pushed to a global array.
 * @param {string} responsetext - A JSON string returned from the server
+* @return {void}
 */
 function tenorCallback_search(responsetext) {
     const ResultsTest = JSON.parse(responsetext)["results"];
