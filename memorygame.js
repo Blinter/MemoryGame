@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelector(".currentGameStatistics").setAttribute("id", "currentGameStatisticsShown");
             document.querySelector(".currentdifficulty").innerHTML = document.querySelector(".currentdifficulty").innerHTML.substring(0, 26) + level;
             document.querySelector(".currentscore").innerHTML = "Current<br />0";
+            document.querySelector(".bestscore").innerHTML = "Best<br />" + bestLevel;
             closeStartMenu();
         }
         if (e.target.className === "mainMenu") {
@@ -208,13 +209,10 @@ function generateMainMenu() {
     gameIntro5.appendChild(gameIntro1);
     document.querySelector("body").appendChild(gameIntro5);
 
-    const gameOutro1 = document.createAttribute("span");
-    gameOutro1.className = "highscore";
-    gameOutro1.innerText = bestScore;
-    const gameOutro3 = document.createElement("div");
-    gameOutro3.innerHTML = gameOutro3.innerHTML + "<br />BEST SCORE<br />" + bestScore + "<br />BEST LEVEL<br />" + bestLevel;
-    gameOutro3.className = "gameStatistics";
-    document.querySelector("html").appendChild(gameOutro3);
+    const gameOutro = document.createElement("div");
+    gameOutro.innerHTML = "<br />BEST SCORE<br />" + bestScore + "<br />BEST LEVEL<br />" + bestLevel;
+    gameOutro.className = "gameStatistics";
+    document.querySelector("html").appendChild(gameOutro);
 }
 /**
 * Generate a card based on an index, assign an image to show for the card, and apply a suffix as a unique identifier for matches.
