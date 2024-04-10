@@ -146,7 +146,7 @@ function compareSelected() {
 }
 /**
 * Searches the DOM for unsolved cards
-* If there are no remaining cards, the game will completed.
+* If there are no remaining cards, the game will be completed.
 * @return {void}
 */
 function checkGameCompletion() {
