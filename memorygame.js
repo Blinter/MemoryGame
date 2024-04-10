@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     for (item of JSON.parse(localStorage.getItem("memorygame")) || []) {
-        currentbest = item.bestscore;
-        currentbestlevel = item.bestlevel;
+        bestScore = item.bestscore;
+        bestLevel = item.bestlevel;
     }
     document.addEventListener("input", (e) => {
         if (e.target.className === "slider")
@@ -9,22 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.addEventListener("click", (e) => {
         if (e.target.className === "shownitem" && !e.target.getAttribute("id")) {
-            if (disablemoreclicks)
+            if (disableMoreClicks)
                 return;
             updateCurrentScore();
-            clickcount++;
+            clickCount++;
             e.target.setAttribute("id", "gameitemshown");
-            if (clickcount === 2) {
-                clickcount = 0;
+            if (clickCount === 2) {
+                clickCount = 0;
                 compareSelected();
             }
         }
         if (e.target.tagName === "INPUT" && e.target.className === "startbutton") {
-            currentlevel = document.querySelector("p.difficultylevel").innerText;
-            generateGameObjects(currentlevel);
+            level = document.querySelector("p.difficultylevel").innerText;
+            generateGameObjects(level);
             document.querySelector(".currentGameStatistics").setAttribute("id", "currentGameStatisticsShown");
-            document.querySelector(".currentdifficulty").innerHTML = document.querySelector(".currentdifficulty").innerHTML.substring(0, 26) + currentlevel;
-            document.querySelector(".currentscore").innerHTML = "Current<br />" + currentscore;
+            document.querySelector(".currentdifficulty").innerHTML = document.querySelector(".currentdifficulty").innerHTML.substring(0, 26) + level;
+            console.log(document.querySelector(".currentscore"));
+            document.querySelector(".currentscore").innerHTML = "Current<br />0";
             closeStartMenu();
         }
         if (e.target.className === "mainMenu") {
@@ -33,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelector("#currentGameWonShown").setAttribute("id", "currentGameWonHidden");
             document.querySelector(".currentGameStatistics").setAttribute("id", "currentGameStatisticsHidden");
             generateMainMenu();
-            resetcurrentScoreLevel();
+            resetscoreLevel();
         }
     });
     for (item of document.querySelectorAll(".gameitemwrapper"))
@@ -60,8 +61,8 @@ function generateGameObjects(itemsAmount) {
     document.querySelector(".gamepanel").appendChild(loadingLabel);
     setTimeout(() => {
         let i = 0;
-        while (tenorimages.length != 0) {
-            const url = tenorimages.pop();
+        while (tenorImages.length != 0) {
+            const url = tenorImages.pop();
             cardArray.push(generateCard(i, url, "a"));
             cardArray.push(generateCard(i, url, "b"));
             i++;
@@ -69,47 +70,50 @@ function generateGameObjects(itemsAmount) {
         shuffle(cardArray);
         loadingLabel.remove();
         populateGameObjects(cardArray);
-        tenorimages = [];
+        tenorImages = [];
     }, 1000);
 }
-let tenorimages = [];
-let currentscore = 0;
-let currentbest = 0;
-let currentlevel = 0;
-let currentbestlevel = 0;
-let clickcount = 0;
-let disablemoreclicks = 0;
+let tenorImages = [];
+
+let score = 0;
+let level = 0;
+
+let bestScore = 0;
+let bestLevel = 0;
+
+let clickCount = 0;
+let disableMoreClicks = 0;
 /**
 * Resets global variables for current score and current level
 * @return {void}
 */
-function resetcurrentScoreLevel() {
-    currentscore = 0;
-    currentlevel = 0;
+function resetscoreLevel() {
+    score = 0;
+    level = 0;
 }
 /**
 * Increments score by 1 and updates the DOM to show current score
 * @return {void}
 */
 function updateCurrentScore() {
-    currentscore++;
-    document.querySelector(".currentscore").innerHTML = "Current<br />" + currentscore;
+    score++;
+    document.querySelector(".currentscore").innerHTML = "Current<br />" + score;
 }
 /**
 * Updates the best score and level by comparing both, updates DOM, and stores into Local Storage
 * @return {void}
 */
 function updateBestScore() {
-    if (currentbest != 0 && currentbest < currentscore && currentbestlevel != 0 && currentlevel < currentbestlevel)
+    if (bestScore != 0 && bestScore < score && bestLevel != 0 && level < bestLevel)
         return;
-    if (currentbest === 0 || currentbest > currentscore)
-        currentbest = currentscore;
-    if (currentbestlevel === 0 || currentlevel > currentbestlevel)
-        currentbestlevel = currentlevel;
-    document.querySelector(".bestscore").innerHTML = "Best<br />" + currentbest;
+    if (bestScore === 0 || bestScore > score)
+        bestScore = score;
+    if (bestLevel === 0 || level > bestLevel)
+        bestLevel = level;
+    document.querySelector(".bestscore").innerHTML = "Best<br />" + bestScore;
     //Local Storage
     const saved = [];
-    saved.push({ bestlevel: currentbestlevel, bestscore: currentbest });
+    saved.push({ bestlevel: bestLevel, bestscore: bestScore });
     localStorage.setItem("memorygame", JSON.stringify(saved));
 }
 /**
@@ -127,22 +131,22 @@ function closeStartMenu() {
 */
 function compareSelected() {
     let selectedCards = document.querySelectorAll("#gameitemshown");
-    let selecteditems = new Set();
+    let selectedItems = new Set();
     for (item of selectedCards)
-        selecteditems.add(item.getAttribute("data-label").substring(4).substring(0, item.getAttribute("data-label").length - 5));
-    if (selecteditems.size === 1) {
+        selectedItems.add(item.getAttribute("data-label").substring(4).substring(0, item.getAttribute("data-label").length - 5));
+    if (selectedItems.size === 1) {
         for (item of document.querySelectorAll("#gameitemshown"))
             item.setAttribute("id", "gameitemcompleted");
         checkGameCompletion();
-        selecteditems.clear();
+        selectedItems.clear();
         return;
     }
     for (item of document.querySelectorAll("#gameitemshown")) {
         item.setAttribute("id", "pendingreset");
-        disablemoreclicks = 1;
-        setTimeout((item) => { item.removeAttribute("id"); disablemoreclicks = 0; }, 1000, item);
+        disableMoreClicks = 1;
+        setTimeout((item) => { item.removeAttribute("id"); disableMoreClicks = 0; }, 1000, item);
     }
-    selecteditems.clear();
+    selectedItems.clear();
 }
 /**
 * Searches the DOM for unsolved cards
@@ -165,8 +169,8 @@ function checkGameCompletion() {
 */
 function regenWinElement() {
     document.querySelector(".currentGameWon").innerHTML = "<h1 class=\"currentGameWonMsg\">YOU WON!</h1><br />" +
-        "DIFFICULTY: " + currentlevel +
-        "<br />BEST: " + currentbest + "<br />" + "Your Score: " + currentscore + "<br />";
+        "DIFFICULTY: " + level +
+        "<br />BEST: " + bestScore + "<br />" + "Your Score: " + score + "<br />";
     const newButton = document.createElement("input");
     newButton.className = "mainMenu";
     newButton.setAttribute("type", "button");
@@ -190,10 +194,10 @@ function generateMainMenu() {
     gameIntro2.setAttribute("id", "Difficulty");
     gameIntro2.setAttribute("min", "4");
     gameIntro2.setAttribute("max", "150");
-    gameIntro2.setAttribute("value", Math.max(currentlevel === 0 ? 8 : currentlevel, 4));
+    gameIntro2.setAttribute("value", Math.max(level === 0 ? 8 : level, 4));
     const gameIntro3 = document.createElement("p");
     gameIntro3.className = "difficultylevel";
-    gameIntro3.innerText = Math.max(currentlevel === 0 ? 8 : currentlevel, 4);
+    gameIntro3.innerText = Math.max(level === 0 ? 8 : level, 4);
     const gameIntro4 = document.createElement("span");
     gameIntro4.className = "labeldifficultyrequest";
     gameIntro4.innerText = "DIFFICULTY";
@@ -207,9 +211,9 @@ function generateMainMenu() {
 
     const gameOutro1 = document.createAttribute("span");
     gameOutro1.className = "highscore";
-    gameOutro1.innerText = currentbest;
+    gameOutro1.innerText = bestScore;
     const gameOutro3 = document.createElement("div");
-    gameOutro3.innerHTML = gameOutro3.innerHTML + "<br />BEST SCORE<br />" + currentbest + "<br />BEST LEVEL<br />" + currentbestlevel;
+    gameOutro3.innerHTML = gameOutro3.innerHTML + "<br />BEST SCORE<br />" + bestScore + "<br />BEST LEVEL<br />" + bestLevel;
     gameOutro3.className = "gameStatistics";
     document.querySelector("html").appendChild(gameOutro3);
 }
@@ -285,10 +289,10 @@ function httpGetAsync(theUrl, callback) {
 * @param {string} responsetext - A JSON string returned from the server
 * @return {void}
 */
-function tenorCallback_search(responsetext) {
+function tenorCallback_Search(responsetext) {
     const ResultsTest = JSON.parse(responsetext)["results"];
     for (item of ResultsTest)
-        tenorimages.push(item["media_formats"]["gif"]["url"]);
+        tenorImages.push(item["media_formats"]["gif"]["url"]);
     return;
 }
 /**
@@ -310,6 +314,6 @@ function grabTenorDatabase(amt) {
         "&limit=" + lmt +
         "&random=true" +
         "&media_filter=gif";
-    httpGetAsync(search_url, tenorCallback_search);
+    httpGetAsync(search_url, tenorCallback_Search);
     return;
 }
